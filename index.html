@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6657d9"><meta name="description" content="MeetMe Kenya — meet people and make connections.">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MeetMe">
+<title>MeetMe Kenya</title>
+<style>
+:root{--p:#6657d9;--ink:#17233d;--bg:#f5f6fb;--muted:#737b8c}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}button{font:inherit;cursor:pointer}.app{max-width:560px;margin:auto;min-height:100dvh;padding-bottom:82px}.top{padding:22px 20px 12px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:28px;font-weight:850;letter-spacing:-1px}.sub{font-size:13px;color:var(--muted);margin-top:2px}.circle{border:0;border-radius:50%;width:42px;height:42px;background:#ece9ff;color:var(--p);font-size:20px}.hero{margin:14px 18px 22px;padding:22px;border-radius:22px;color:white;background:linear-gradient(120deg,#6254d6,#a078e8)}.hero h2{margin:0 0 7px;font-size:21px}.hero p{margin:0;color:#eee9ff;font-size:14px}.safe{font-size:12px;margin-top:16px;color:#f0edff}.section{padding:0 18px}.section h3{font-size:18px;margin:20px 0 12px}.person{display:flex;align-items:center;gap:12px;background:white;border-radius:17px;padding:12px;margin-bottom:10px;box-shadow:0 2px 12px #1b255008}.avatar{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:white;font-size:23px;font-weight:750;flex:none}.info{min-width:0;flex:1}.info strong{font-size:15px}.info p{font-size:12px;color:var(--muted);margin:4px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.distance{font-size:12px;color:var(--muted);white-space:nowrap}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);display:flex;justify-content:space-around;background:#ffffffed;backdrop-filter:blur(12px);padding:10px 5px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #e9eaf1}.nav button{border:0;background:none;color:#8990a0;font-size:11px;display:grid;gap:3px;justify-items:center;min-width:64px}.nav button span{font-size:21px}.nav button.active{color:var(--p);font-weight:750}.chips{display:flex;gap:8px;overflow:auto;margin:12px 0}.chip{border:0;border-radius:20px;padding:9px 15px;background:white;color:var(--ink)}.chip.selected{background:#e9e5ff;color:var(--p)}.panel{background:white;padding:16px;border-radius:16px;margin:14px 18px;font-size:14px;color:var(--muted)}.primary{border:0;border-radius:12px;background:var(--p);color:white;padding:12px 16px;font-weight:700}.profile{text-align:center;padding:34px 20px}.bigavatar{width:88px;height:88px;border-radius:50%;margin:auto;background:#e4dfff;color:var(--p);display:grid;place-items:center;font-size:42px}.option{padding:16px 4px;border-bottom:1px solid #eee;text-align:left;width:100%;border:0;border-bottom:1px solid #eee;background:transparent;color:var(--ink)}.chatrow{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #eee}.hidden{display:none!important}.hint{font-size:12px;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div><div class="brand">MeetMe<span style="color:var(--p)">.</span></div><div class="sub">Meet people. Make connections.</div></div><button class="circle" aria-label="Notifications">♧</button></header>
+<main id="content"></main>
+<nav class="nav" aria-label="Main navigation">
+<button class="active" data-tab="discover"><span>⌂</span>Discover</button><button data-tab="nearby"><span>◎</span>Nearby</button><button data-tab="messages"><span>▤</span>Messages</button><button data-tab="me"><span>◉</span>Me</button>
+</nav>
+</div>
+<script>
+const users=[
+{name:"Amina",age:24,area:"Westlands, Nairobi",km:2,bio:"Coffee, music and exploring Nairobi ☀️",letter:"A",color:"#e3a09a"},
+{name:"Brian",age:27,area:"Kilimani, Nairobi",km:4,bio:"Football fan. Always up for good conversation.",letter:"B",color:"#82b2d5"},
+{name:"Wanjiku",age:23,area:"Lavington, Nairobi",km:6,bio:"Books, nature and weekend adventures 🌿",letter:"W",color:"#ae99d2"},
+{name:"Kevin",age:29,area:"Embakasi, Nairobi",km:8,bio:"Tech enthusiast and foodie.",letter:"K",color:"#d8ae68"},
+{name:"Zuri",age:25,area:"Karen, Nairobi",km:12,bio:"Art, travel and good vibes.",letter:"Z",color:"#83b7a0"}];
+let tab="discover",radius=10,activeChat=null;
+const content=document.querySelector("#content");
+function avatar(u){return '<div class="avatar" style="background:'+u.color+'">'+u.letter+'</div>'}
+function card(u){return '<article class="person">'+avatar(u)+'<div class="info"><strong>'+u.name+', '+u.age+'</strong><p>'+u.area+' · '+u.bio+'</p></div><span class="distance">'+u.km+' km</span></article>'}
+function render(){
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+ if(tab==="discover")content.innerHTML='<section class="hero"><h2>Your next connection is nearby</h2><p>Discover friendly people across Kenya.</p><div class="safe">♧ &nbsp; You control your location privacy</div></section><section class="section"><h3>People you may like</h3>'+users.slice(0,3).map(card).join("")+'</section>';
+ if(tab==="nearby")content.innerHTML='<section class="section"><h2>Nearby people</h2><p class="sub">Find people around you in Kenya.</p></section><div class="panel"><strong>Location permission</strong><p>Allow location to calculate nearby distances. Your exact location is not shown to other people.</p><button class="primary" id="loc">Use my location</button><p id="locstatus" class="hint">Sample profiles are shown until a real user service is connected.</p></div><section class="section"><h3>Search radius</h3><div class="chips">'+[5,10,25,50].map(n=>'<button class="chip '+(radius===n?'selected':'')+'" data-radius="'+n+'">'+n+' km</button>').join("")+'</div>'+users.filter(u=>u.km<=radius).map(card).join("")+'</section>';
+ if(tab==="messages")content.innerHTML='<section class="section"><h2>Messages</h2><p class="sub">Your conversations will appear here.</p>'+users.slice(0,3).map(u=>'<div class="chatrow">'+avatar(u)+'<div class="info"><strong>'+u.name+'</strong><p>Say hello and start a conversation</p></div><button class="circle" data-chat="'+u.name+'">›</button></div>').join("")+'<p class="hint">Demo messages stay on this device. Real-time chat will be connected to a secure server in a later release.</p></section>';
+ if(tab==="me")content.innerHTML='<section class="profile"><div class="bigavatar">☺</div><h2>Your profile</h2><p class="sub">Add your name and introduction after registration is connected.</p></section><section class="section"><button class="option">✎ &nbsp; Edit profile</button><button class="option">♧ &nbsp; Privacy and location</button><button class="option">⊘ &nbsp; Blocked users</button><button class="option">⚑ &nbsp; Help and report a problem</button><button class="option">⚙ &nbsp; Settings</button><p class="hint">MeetMe Kenya · Early prototype</p></section>';
+ document.querySelector("#loc")?.addEventListener("click",()=>{const s=document.querySelector("#locstatus");if(!navigator.geolocation){s.textContent="Location is not available in this browser.";return}s.textContent="Requesting permission…";navigator.geolocation.getCurrentPosition(()=>s.textContent="Location permission granted on this device. Live nearby search is not connected yet.",()=>s.textContent="Permission not granted. You can continue without sharing location.")});
+ document.querySelectorAll("[data-radius]").forEach(b=>b.addEventListener("click",()=>{radius=Number(b.dataset.radius);render()}));
+ document.querySelectorAll("[data-chat]").forEach(b=>b.addEventListener("click",()=>{activeChat=users.find(u=>u.name===b.dataset.chat);renderChat()}));
+}
+function renderChat(){content.innerHTML='<section class="section"><button class="chip" id="back">← Messages</button><h2>Chat with '+activeChat.name+'</h2><div class="panel" id="thread">Say hello 👋</div><form id="send" style="display:flex;gap:8px"><input id="msg" placeholder="Write a message…" style="min-width:0;flex:1;border:0;border-radius:12px;padding:13px"><button class="primary">Send</button></form><p class="hint">This is a local demo conversation, not delivered to another user.</p></section>';document.querySelector("#back").onclick=()=>{activeChat=null;render()};document.querySelector("#send").onsubmit=e=>{e.preventDefault();const i=document.querySelector("#msg");if(i.value.trim()){const p=document.createElement("p");p.textContent=i.value;document.querySelector("#thread").append(p);i.value=""}}}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.tab;render()}));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+render();
+</script>
+</body></html>
